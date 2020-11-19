@@ -35,3 +35,18 @@ footer{
     background-color: lightsteelblue;
     padding-top: 1%;
 }
+.green{
+    background-color: green;
+}
+.yellow{
+    background-color: yellow;
+}
+.orange{
+    background-color: orange;
+}
+.red{
+    background-color: red;
+}
+.violet{
+    background-color: rgb(95, 51, 95);
+}

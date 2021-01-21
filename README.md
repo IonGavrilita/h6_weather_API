@@ -26,9 +26,6 @@ WHEN I open the weather dashboard
 THEN I am presented with the last searched city forecast
 ```
 ### Images with application functionality:
-
-| Project page 1   | Project page 2 | 
-|------------|------------|------------|
 | <img src="Images/App-img.png" width="300"> | <img src="Images/Func-img.png" width="300"> |
 
 ### Tech/framework used:
@@ -38,8 +35,8 @@ THEN I am presented with the last searched city forecast
     
 
 ## Project Link & Repository
-- App Link- ()
-- Repository Link - ()
+- App Link- (https://iongavrilita.github.io/h6_weather_API/.)
+- Repository Link - (https://github.com/IonGavrilita/h6_weather_API)
 
 ## Contributors
 * Name: Ion Gavrilita

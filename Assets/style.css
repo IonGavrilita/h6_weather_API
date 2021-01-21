@@ -14,7 +14,7 @@ a {
     text-decoration: none;
 }
 p {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 
@@ -34,6 +34,14 @@ footer{
     text-align: center;
     background-color: lightsteelblue;
     padding-top: 1%;
+}
+#border{
+    padding-bottom: 1%;
+    width: 100%;
+}
+.card-deck{
+    align-self: auto;
+    padding-left: 3%;
 }
 .green{
     background-color: green;

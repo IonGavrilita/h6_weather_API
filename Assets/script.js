@@ -1,10 +1,41 @@
-
-var cityStorage = ["Chicago", "New York", "Los Angeles"];
 var apiKey = "d0be1a0283dc9c0c9c8884c1eaa793db";
 var date = moment().format(" DD/MM/YYYY");
-var card = $("<div>").attr("class", "card-body");
+var card = $("<div>").attr("class", "card-group");
 var dataDaily = $("<div>").attr("class", "dataDaily");
 var display = $("#currentWeather");
+var cityClick= '';
+
+
+//Display the list of cities from local storage
+if(typeof localStorage.cityStorage === "undefined"){
+  var cityStorage = ["Chicago", "New York", "Los Angeles"];
+}else{
+  cityStorage = JSON.parse(localStorage.getItem("cityStorage"))
+}
+
+
+
+
+// add event listener onClick function take the input and save local storage
+//Check if the same city exist in storage
+$("#searchBtn").on("click", function(event){
+  $("#search-input").empty();
+    event.preventDefault();
+    var citySearch = $("#search-input").val().trim();
+    var cityIsAdd = false;
+    for (var i=0; i< cityStorage.length; i++){
+      if(cityStorage[i].toLowerCase() === citySearch.toLowerCase()){
+        cityIsAdd = true;
+      }
+    }
+    if (cityIsAdd === false){
+      localStorage.setItem("citySearch", citySearch);
+    cityStorage.push(citySearch);
+    localStorage.setItem("cityStorage", JSON.stringify(cityStorage));
+    // The city from the textbox is then added to our array
+    
+    }
+  })
 
 // Function for displaying city
 function renderButtons() {
@@ -28,20 +59,28 @@ function renderButtons() {
     $("#cityListBtn").append(a);
     
   }
+  
 }
+//Search the weather when past cities button is clicked
+$(document).on("click", ".city-btn", function (event) {
+  cityClick = $(this).attr("data-city");
+  UrlWeather(cityClick);
+});
+//Search the weather when user input search the city
+$(document).on("click", "#searchBtn", function (){
+cityClick = localStorage.getItem("citySearch");
+    UrlWeather(cityClick);
+  
+});
 
-//add event listener onClick function take the input and save local storage
-$("#searchBtn").on("click", function(event){
-    event.preventDefault();
-    var citySearch = $("#search-input").val().trim().toLowerCase();
-    cityStorage.push(citySearch);
-    localStorage.setItem("cityStorage", JSON.stringify(cityStorage));
-    // The movie from the textbox is then added to our array
-    (renderButtons);
 
+
+
+function  UrlWeather(cityClick){
+    
     // Constructing a URL to search for weather
-var weatherURl = "http://api.openweathermap.org/data/2.5/weather?q="+ citySearch + "&units=imperial&appid="+ apiKey;
-console.log(citySearch)
+var weatherURl = "http://api.openweathermap.org/data/2.5/weather?q="+ cityClick + "&units=imperial&appid="+ apiKey;
+
 // Performing our AJAX GET request
 $.ajax({
     url: weatherURl,
@@ -61,12 +100,12 @@ $.ajax({
 //Display current date weather
 function currentWeather(APIresponse){
   display.empty();
+var icon = "http://openweathermap.org/img/wn/" + APIresponse.weather[0].icon + ".png";
   //Display data weather in id
-  display.append($("<h3>").text(APIresponse.name + date));
+  display.append($("<h3>").html(APIresponse.name + "(" + date + ")" +"<img src="+ icon + ">"));
   display.append($("<h6>").text("Temperature:"+ APIresponse.main.temp + "°F"));
   display.append($("<h6>").text("Humidity:"+ APIresponse.main.humidity + "%"));
   display.append($("<h6>").text("Wind Speed:"+ APIresponse.wind.speed + "MPH"));
-  display.prepend($("<img>").attr("src", "http://openweathermap.org/img/wn/" + APIresponse.weather[0].icon + ".png"));
   };
 
  //Call 5 days forecast
@@ -85,59 +124,59 @@ function currentWeather(APIresponse){
    
    //add UV index with color that indicates whether conditions
  var UVindex = APIresponse5days.current.uvi;
- display.append($('<h6 id= "index">').text("UVindex:"+ UVindex));
+ display.append($('<h6 class="card-text w-25 p-1">').text("UVindex:"+ UVindex));
  console.log(UVindex);
  if(UVindex < 3){
-  $("#index").addClass("green")
+  $(".card-text").addClass("green")
  }else if(UVindex >= 3 || UVindex < 6){
-  $("#index").addClass("yellow")
+  $(".card-text").addClass("yellow")
  }else if(UVindex >= 6 || UVindex < 8){
-  $("#index").addClass("orange")
+  $(".card-text").addClass("orange")
  }else if(UVindex >= 8 || UVindex < 1){
-  $("#index").addClass("red")
+  $(".card-text").addClass("red")
  }else if(UVindex >= 11 ){
-  $("#index").addClass("violet")
+  $(".card-text").addClass("violet")
  }
  
  })
   });
-})
+  renderButtons();
+};
+ 
+
 
   //Display current date weather 5 days
 function currentWeather5days(APIresponse5days){
   
   //Display data weather in id
   var display5days = $("#5daysWeather");
+  var diplay5dayForecast = $("#5daysForecast")
   display5days.empty();
-  dataDaily.empty();
-  card.empty();
-  for (let i = 0; i<5; i++){
+  diplay5dayForecast.empty();
+  diplay5dayForecast.append($("<h4>").text("5 Day Forecast :"));
+  for (var i = 0; i<5; i++){
     var num = ((Math.round(APIresponse5days.daily[i].wind_speed)*2.237).toFixed(2));
-  dataDaily.append($("<h5>").text(formatDate(APIresponse5days.daily[i].dt )));
-  dataDaily.append($("<p>").text("Temperature:"+ (Math.round(APIresponse5days.daily[i].temp.day - 273.15) * 1.8 + 32)));
-  dataDaily.append($("<p>").text("Humidity:"+ APIresponse5days.daily[i].humidity + "%"));
-  dataDaily.append($("<p>").text("Wind Speed:"+ num + "MPH"));
-  dataDaily.prepend($("<img>").attr("src", "http://openweathermap.org/img/wn/" + APIresponse5days.daily[i].weather[0].icon + ".png"));
-  card.append(dataDaily);
+  var date= $("<h5>").text(formatDate(APIresponse5days.daily[i].dt ));
+  var temperature = $("<p>").text("Temperature:"+ (Math.round(APIresponse5days.daily[i].temp.day - 273.15) * 1.8 + 32));
+  var humidity = $("<p>").text("Humidity:"+ APIresponse5days.daily[i].humidity + "%");
+  var wind = $("<p>").text("Wind Speed:"+ num + "MPH");
+  var icon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + APIresponse5days.daily[i].weather[0].icon + ".png");
+
+var card = $("<div>").attr("class", "card m-1");
+var cardbody = $("<div>").attr("class", "card-body p-1");
+  cardbody.append(date).append(icon).append(temperature).append(humidity).append(wind);
+  card.append(cardbody);
   display5days.append(card);
-
-  }}
+  }
+}
   
-
-  //Convert date from API call
+  //Convert current date
   function formatDate(unix_timestamp) {
     var date = new Date(unix_timestamp * 1000);
     return date.toLocaleDateString();
 }
- 
-
-// Calling the renderButtons function at least once to display the initial list of cities
 renderButtons();
 
-
-
-
-  
 
 
 

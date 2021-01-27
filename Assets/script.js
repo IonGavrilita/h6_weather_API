@@ -6,14 +6,7 @@ var display = $("#currentWeather");
 var cityClick= '';
 
 
-//Display the list of cities from local storage
-if(typeof localStorage.cityStorage === "undefined"){
-  var cityStorage = ["Chicago", "New York", "Los Angeles"];
-}else{
-  cityStorage = JSON.parse(localStorage.getItem("cityStorage"))
-}
-
-
+ 
 // add event listener onClick function take the input and save local storage
 //Check if the same city exist in storage
 $("#searchBtn").on("click", function(event){
@@ -59,6 +52,22 @@ function renderButtons() {
   }
   
 }
+
+//Display the list of cities from local storage and call for the last city searched when page is loaded
+$(document).ready(function(){
+if(typeof localStorage.cityStorage === "undefined"){
+  var cityStorage = ["Chicago", "New York", "Los Angeles"];
+  localStorage.setItem("cityStorage", JSON.stringify(cityStorage))
+  var cityClick = cityStorage[cityStorage.length-1]
+  UrlWeather(cityClick);
+  renderButtons;
+}else{
+  cityStorage = JSON.parse(localStorage.getItem("cityStorage"))
+  var cityClick = cityStorage[cityStorage.length-1]
+  UrlWeather(cityClick);
+};
+});
+
 //Search the weather when past cities button is clicked
 $(document).on("click", ".city-btn", function (event) {
   cityClick = $(this).attr("data-city");
@@ -68,8 +77,11 @@ $(document).on("click", ".city-btn", function (event) {
 $(document).on("click", "#searchBtn", function (){
 cityClick = localStorage.getItem("citySearch");
     UrlWeather(cityClick);
-  
 });
+
+  
+
+
 
 
 function  UrlWeather(cityClick){
@@ -99,8 +111,8 @@ function currentWeather(APIresponse){
 var icon = "https://openweathermap.org/img/wn/" + APIresponse.weather[0].icon + ".png";
   //Display data weather in id
   display.append($("<h3>").html(APIresponse.name + "(" + date + ")" +"<img src="+ icon + ">"));
-  display.append($("<h6>").text("Temperature:"+ APIresponse.main.temp + "°F"));
-  display.append($("<h6>").text("Humidity:"+ APIresponse.main.humidity + "%"));
+  display.append($("<h6>").text("Temperature: "+ APIresponse.main.temp + "°F"));
+  display.append($("<h6>").text("Humidity: "+ APIresponse.main.humidity + "%"));
   display.append($("<h6>").text("Wind Speed: "+ APIresponse.wind.speed.toFixed(0) + " MPH"));
   };
 
@@ -120,7 +132,7 @@ var icon = "https://openweathermap.org/img/wn/" + APIresponse.weather[0].icon + 
    
    //add UV index with color that indicates whether conditions
  var UVindex = APIresponse5days.current.uvi;
- display.append($('<h6 class="card-text w-25 p-1">').text("UVindex:"+ UVindex));
+ display.append($('<h6 class="card-text w-25 p-1">').text("UVindex: "+ UVindex));
  console.log(UVindex);
  if(UVindex < 3){
   $(".card-text").addClass("green")
@@ -153,8 +165,8 @@ function currentWeather5days(APIresponse5days){
   for (var i = 0; i<5; i++){
     var num = ((Math.round(APIresponse5days.daily[i].wind_speed)*2.237).toFixed(0));
   var date= $("<h5>").text(formatDate(APIresponse5days.daily[i].dt ));
-  var temperature = $("<p>").text("Temperature:"+ (Math.round(APIresponse5days.daily[i].temp.day - 273.15) * 1.8 + 32));
-  var humidity = $("<p>").text("Humidity:"+ APIresponse5days.daily[i].humidity + "%");
+  var temperature = $("<p>").text("Temperature: "+ (Math.round(APIresponse5days.daily[i].temp.day - 273.15) * 1.8 + 32));
+  var humidity = $("<p>").text("Humidity: "+ APIresponse5days.daily[i].humidity + "%");
   var wind = $("<p>").text("Wind Speed: "+ num + " MPH");
   var icon = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + APIresponse5days.daily[i].weather[0].icon + ".png");
 

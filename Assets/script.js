@@ -72,8 +72,6 @@ cityClick = localStorage.getItem("citySearch");
 });
 
 
-
-
 function  UrlWeather(cityClick){
     
     // Constructing a URL to search for weather

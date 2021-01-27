@@ -79,7 +79,7 @@ cityClick = localStorage.getItem("citySearch");
 function  UrlWeather(cityClick){
     
     // Constructing a URL to search for weather
-var weatherURl = "http://api.openweathermap.org/data/2.5/weather?q="+ cityClick + "&units=imperial&appid="+ apiKey;
+var weatherURl = "https://api.openweathermap.org/data/2.5/weather?q="+ cityClick + "&units=imperial&appid="+ apiKey;
 
 // Performing our AJAX GET request
 $.ajax({
@@ -100,7 +100,7 @@ $.ajax({
 //Display current date weather
 function currentWeather(APIresponse){
   display.empty();
-var icon = "http://openweathermap.org/img/wn/" + APIresponse.weather[0].icon + ".png";
+var icon = "https://openweathermap.org/img/wn/" + APIresponse.weather[0].icon + ".png";
   //Display data weather in id
   display.append($("<h3>").html(APIresponse.name + "(" + date + ")" +"<img src="+ icon + ">"));
   display.append($("<h6>").text("Temperature:"+ APIresponse.main.temp + "°F"));
@@ -160,7 +160,7 @@ function currentWeather5days(APIresponse5days){
   var temperature = $("<p>").text("Temperature:"+ (Math.round(APIresponse5days.daily[i].temp.day - 273.15) * 1.8 + 32));
   var humidity = $("<p>").text("Humidity:"+ APIresponse5days.daily[i].humidity + "%");
   var wind = $("<p>").text("Wind Speed:"+ num + "MPH");
-  var icon = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + APIresponse5days.daily[i].weather[0].icon + ".png");
+  var icon = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + APIresponse5days.daily[i].weather[0].icon + ".png");
 
 var card = $("<div>").attr("class", "card m-1");
 var cardbody = $("<div>").attr("class", "card-body p-1");

@@ -14,8 +14,6 @@ if(typeof localStorage.cityStorage === "undefined"){
 }
 
 
-
-
 // add event listener onClick function take the input and save local storage
 //Check if the same city exist in storage
 $("#searchBtn").on("click", function(event){

@@ -101,7 +101,7 @@ var icon = "https://openweathermap.org/img/wn/" + APIresponse.weather[0].icon + 
   display.append($("<h3>").html(APIresponse.name + "(" + date + ")" +"<img src="+ icon + ">"));
   display.append($("<h6>").text("Temperature:"+ APIresponse.main.temp + "°F"));
   display.append($("<h6>").text("Humidity:"+ APIresponse.main.humidity + "%"));
-  display.append($("<h6>").text("Wind Speed:"+ APIresponse.wind.speed + "MPH"));
+  display.append($("<h6>").text("Wind Speed: "+ APIresponse.wind.speed.toFixed(0) + " MPH"));
   };
 
  //Call 5 days forecast
@@ -151,11 +151,11 @@ function currentWeather5days(APIresponse5days){
   diplay5dayForecast.empty();
   diplay5dayForecast.append($("<h4>").text("5 Day Forecast :"));
   for (var i = 0; i<5; i++){
-    var num = ((Math.round(APIresponse5days.daily[i].wind_speed)*2.237).toFixed(2));
+    var num = ((Math.round(APIresponse5days.daily[i].wind_speed)*2.237).toFixed(0));
   var date= $("<h5>").text(formatDate(APIresponse5days.daily[i].dt ));
   var temperature = $("<p>").text("Temperature:"+ (Math.round(APIresponse5days.daily[i].temp.day - 273.15) * 1.8 + 32));
   var humidity = $("<p>").text("Humidity:"+ APIresponse5days.daily[i].humidity + "%");
-  var wind = $("<p>").text("Wind Speed:"+ num + "MPH");
+  var wind = $("<p>").text("Wind Speed: "+ num + " MPH");
   var icon = $("<img>").attr("src", "https://openweathermap.org/img/wn/" + APIresponse5days.daily[i].weather[0].icon + ".png");
 
 var card = $("<div>").attr("class", "card m-1");

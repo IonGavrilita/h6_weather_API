@@ -29,7 +29,7 @@ THEN I am presented with the last searched city forecast
 
 | Project page 1   | Project page 2 | 
 |------------|------------|------------|
-| <img src="images/App-img.png" width="300"> | <img src="images/Func-img.png" width="300"> |
+| <img src="./Images/App-img.png" width="300"> | <img src="Images/Func-img.png" width="300"> |
 
 ### Tech/framework used:
 * Weather API Call

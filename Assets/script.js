@@ -6,7 +6,22 @@ var display = $("#currentWeather");
 var cityClick= '';
 
 
- 
+ //Display the list of cities from local storage and call for the last city searched when page is loaded
+$(document).ready(function(){
+if(typeof localStorage.cityStorage === "undefined"){
+  var cityStorage = ["Chicago", "New York", "Los Angeles"];
+  localStorage.setItem("cityStorage", JSON.stringify(cityStorage))
+  var cityClick = cityStorage[cityStorage.length-1]
+  UrlWeather(cityClick);
+  renderButtons;
+}else{
+  cityStorage = JSON.parse(localStorage.getItem("cityStorage"))
+  var cityClick = cityStorage[cityStorage.length-1]
+  UrlWeather(cityClick);
+};
+});
+
+
 // add event listener onClick function take the input and save local storage
 //Check if the same city exist in storage
 $("#searchBtn").on("click", function(event){

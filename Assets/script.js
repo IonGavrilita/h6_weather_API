@@ -4,7 +4,7 @@ var card = $("<div>").attr("class", "card-group");
 var dataDaily = $("<div>").attr("class", "dataDaily");
 var display = $("#currentWeather");
 var cityClick= '';
-
+var cityStorage = ["Chicago", "New York", "Los Angeles"];
 
 // add event listener onClick function take the input and save local storage
 //Check if the same city exist in storage
@@ -55,7 +55,6 @@ function renderButtons() {
 //Display the list of cities from local storage and call for the last city searched when page is loaded
 $(document).ready(function(){
 if(typeof localStorage.cityStorage === "undefined"){
-  var cityStorage = ["Chicago", "New York", "Los Angeles"];
   localStorage.setItem("cityStorage", JSON.stringify(cityStorage))
   var cityClick = cityStorage[cityStorage.length-1]
   UrlWeather(cityClick);
